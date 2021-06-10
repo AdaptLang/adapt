@@ -1,0 +1,126 @@
+/***************************
+ *  Sample of Adapt Syntax *
+ ***************************/
+
+#include "header.adapt" 
+
+fn test(0): int { // Functional paradigm allows you to set default values
+  return 5 
+}
+
+fn test(n: int): int { // Types can be inferred or stated. Stated allows overloading
+  return 1 + test(n - 1)
+}
+
+const inout: stream = io.iostream.init()
+
+inout << "Hello world!\n" // Kind of like C++
+
+var txt: string
+
+inout >> txt // Same stream for input and output
+
+// We can also set a print function
+fn print(txt: string): void {
+  inout << txt << "\n"
+}
+
+print("Hello world!")
+
+// How streams work:
+new stream txtstream {
+  private temp: string
+
+  init() {
+    this.temp = ""
+  }
+  
+  in(val: txt) {
+    this.temp += txt
+  }
+  
+  out() {
+    return this.temp
+  }
+}
+
+const teststream: stream = txtstream.init()
+teststream << "Hello"
+teststream >> txt
+print(txt) // Prints "Hello"
+teststream << " world!"
+teststream >> txt
+print(txt) // Prints "Hello world!"
+
+
+// Also, primitive data types:
+new primitive twoBitBinary {
+  value: bin[2] // two binary bits
+  
+  set(val: bin[2]) {
+    this.value = bin[2]
+  }
+  
+  operator[&](other: twoBitBinary) {
+    var temp: twoBitBinary
+    temp[0] = this[0] & other[0]
+    temp[1] = this[1] & other[1]
+    
+    return temp
+  }
+  
+  cast[int]() { // Cast to int
+    var temp: int
+    temp[0] = this[0]
+    temp[1] = this[1]
+    
+    return temp
+  }
+  
+  cast[string]() {
+    var temp: int = int.castFrom(this)
+    return string.castFrom(temp)
+  }
+}
+
+
+// Conditionals:
+if(true) {
+  // thing 1
+} else {
+  // thing 2
+}
+
+/*
+Loops are like this:
+
+// While:
+loop(bool) {
+
+}
+
+// Count from a to b:
+loop(a to b) {
+
+}
+
+
+// Classic for loop:
+loop(var i: int = 0; i < 10; i++) {
+
+}
+
+
+// Foreach:
+
+loop(each item of thing) {
+
+}
+
+*/
+
+
+
+/*********************
+ * More coming soon! *
+ *********************/
